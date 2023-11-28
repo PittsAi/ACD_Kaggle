@@ -9,7 +9,11 @@ class ACDModelWithPrompt(nn.Module):
         self.bert = BertModel.from_pretrained(pretrained_model_name_or_path=args.model.model_name_or_path,
                                               output_attentions=args.model.output_attentions,
                                               output_hidden_states=args.model.output_hidden_states)
-
+        if torch.cuda.device_count() > 1:
+            self.bert = torch.nn.DataParallel(self.bert).module
+        else:
+            self.bert = self.bert
+        
         self.fc = nn.Linear(args.model.bert_hidden_size, args.model.num_class)
         self.embeddings = self.bert.embeddings
         self.dropout = nn.Dropout(args.model.hidden_dropout_prob)
@@ -60,21 +64,13 @@ class ACDModelWithPrompt(nn.Module):
         input_mask = torch.cat((prefix_attention_mask, input_mask), dim=1)
         # print(f'input_mask:{input_mask.shape}')
         # print(f'inputs_embeds:{inputs_embeds.shape}') 
-        if torch.cuda.device_count() > 1:
-            self.bert = torch.nn.DataParallel(self.bert)
-            outputs = self.bert.module(
+
+        outputs = self.bert(
                 attention_mask=input_mask,
                 inputs_embeds=inputs_embeds,
                 output_attentions=output_attentions,
                 output_hidden_states=output_hidden_states,           
-            )
-        else:
-            outputs = self.bert(
-                attention_mask=input_mask,
-                inputs_embeds=inputs_embeds,
-                output_attentions=output_attentions,
-                output_hidden_states=output_hidden_states,           
-            )
+            )    
         sequence_output = outputs[0]
         sequence_output = sequence_output[:, self.pre_seq_len:, :].contiguous()
         first_token_tensor = sequence_output[:, 0]
