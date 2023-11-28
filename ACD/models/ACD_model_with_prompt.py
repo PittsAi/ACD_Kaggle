@@ -24,7 +24,7 @@ class ACDModelWithPrompt(nn.Module):
                 param.requires_grad = False
         else:
             for param in self.bert.parameters():
-            param.requires_grad = True
+                param.requires_grad = True
 
         self.pre_seq_len = args.model.pre_seq_len
         self.prefix_tokens = torch.arange(self.args.model.pre_seq_len).long()
