@@ -9,12 +9,6 @@ class ACDModelWithPrompt(nn.Module):
         self.bert = BertModel.from_pretrained(pretrained_model_name_or_path=args.model.model_name_or_path,
                                               output_attentions=args.model.output_attentions,
                                               output_hidden_states=args.model.output_hidden_states)
-        if torch.cuda.device_count() > 1:
-            print(f'num of cuda:{torch.cuda.device_count()}')
-            self.bert = torch.nn.DataParallel(self.bert).module
-        else:
-            print(f'num of cuda:{torch.cuda.device_count()}')
-            self.bert = self.bert
         
         self.fc = nn.Linear(args.model.bert_hidden_size, args.model.num_class)
         self.embeddings = self.bert.embeddings

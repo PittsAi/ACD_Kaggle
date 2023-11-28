@@ -53,6 +53,14 @@ class ACDPromptTrainer(TrainerBase):
 
 
     def train_epoch(self, epoch):
+
+        if torch.cuda.device_count() > 1:
+            print(f'num of cuda:{torch.cuda.device_count()}')
+            self.models = nn.DataParallel(self.models).module
+        else:
+            print(f'num of cuda:{torch.cuda.device_count()}')
+            self.models = self.models
+
         self.models.train()
         train_loss, total_correct = 0, 0
 
