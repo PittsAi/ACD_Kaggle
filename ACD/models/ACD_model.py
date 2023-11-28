@@ -21,7 +21,7 @@ class ACDModel(nn.Module):
                 param.requires_grad = False
         else:
             for param in self.bert.parameters():
-            param.requires_grad = True
+                param.requires_grad = True
 
     def forward(self, input_ids, input_mask, segment_ids, label=None):
         bert_output = self.bert(input_ids=input_ids,
