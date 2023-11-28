@@ -10,8 +10,10 @@ class ACDModelWithPrompt(nn.Module):
                                               output_attentions=args.model.output_attentions,
                                               output_hidden_states=args.model.output_hidden_states)
         if torch.cuda.device_count() > 1:
+            print(f'num of cuda:{torch.cuda.device_count()}')
             self.bert = torch.nn.DataParallel(self.bert).module
         else:
+            print(f'num of cuda:{torch.cuda.device_count()}')
             self.bert = self.bert
         
         self.fc = nn.Linear(args.model.bert_hidden_size, args.model.num_class)
@@ -21,10 +23,11 @@ class ACDModelWithPrompt(nn.Module):
         self.loss_fct = nn.CrossEntropyLoss()
 
         if args.experiment.with_parameter_freeze:
-            print(f'param.requires_grad:{args.experiment.with_parameter_freeze}')
+            print(f'param_freeze:{args.experiment.with_parameter_freeze}')
             for param in self.bert.parameters():
                 param.requires_grad = False
         else:
+            print(f'param_freeze:{args.experiment.with_parameter_freeze}')
             for param in self.bert.parameters():
                 param.requires_grad = True
 
