@@ -5,14 +5,14 @@
        "do_training": true,
        "output_dir": "results",
        "taskname": "ACD_Prompt",
-       "input_ckpt_path": "/root/02-ACD-Prompt_v1.0/ckpt/",
-       "output_ckpt": "/root/02-ACD-Prompt_v1.0/ckpt/output_ckpt",
+       "input_ckpt_path": "./ckpt/",
+       "output_ckpt": "./ckpt/output_ckpt",
        "num_epoch_checkpoints": 3,
        "with_prompt": true,
        "with_parameter_freeze":true
     },
     "data": {
-        "directory": "/root/02-ACD-Prompt_v1.0/data",
+        "directory": "./data",
         "dataset_class": "ACD",
         "text": {
             "train": "train/train-all.txt",
@@ -27,8 +27,8 @@
     },
     "model": {
         "name": "ACD_Prompt",
-        "model_name_or_path": "/root/02-ACD-Prompt_v1.0/bert-base-chinese",
-        "model_save_path":"/root/02-ACD-Prompt_v1.0/ckpt/",
+        "model_name_or_path": "./bert-base-chinese",
+        "model_save_path":"./ckpt/",
         "pretrained_weights": null,
         "do_lower_case": true,
         "output_attentions": false,

@@ -33,7 +33,7 @@ class Arguments(object):
 
     def get_args(self):
         parser = argparse.ArgumentParser()
-        parser.add_argument('--config', default='/root/02-ACD-Prompt_v1.0/configs/ACD-baseline.json', help='Provide the JSON config path with the parameters of your experiment')
+        parser.add_argument('--config', default='./configs/ACD-baseline.json', help='Provide the JSON config path with the parameters of your experiment')
         parser.add_argument('--replicable', type=bool, default=True, help='')
         parser.add_argument('--is_cuda', type=bool, default=False, help='')
         parser.add_argument('--log_interval', type=int, default=10, help='')
