@@ -24,6 +24,14 @@ class ACDPromptTrainer(TrainerBase):
         self.datamodule = ACDDataModule(args)
         #self.models = ACDModelWithCombinedPrompt(args).cuda() if self.is_cuda else ACDModelWithCombinedPrompt(args)
         self.models = ACDModelWithPrompt(args)
+
+        if torch.cuda.device_count() > 1:
+            print(f'num of cuda:{torch.cuda.device_count()}')
+            self.models = nn.DataParallel(self.models).cuda()
+        else:
+            print(f'num of cuda:{torch.cuda.device_count()}')
+            self.models = self.models.cuda() if self.is_cuda else self.models
+
         self._initial_optimizer_schedule()
 
     def _initial_optimizer_schedule(self):
@@ -51,17 +59,8 @@ class ACDPromptTrainer(TrainerBase):
                                                          num_warmup_steps=self.args.training.optim.warmup_steps,
                                                          num_training_steps=self.datamodule.num_train_steps)
 
-
     def train_epoch(self, epoch):
-
-        if torch.cuda.device_count() > 1:
-            print(f'num of cuda:{torch.cuda.device_count()}')
-            self.models = nn.DataParallel(self.models).module
-        else:
-            print(f'num of cuda:{torch.cuda.device_count()}')
-            self.models = self.models
-
-        self.models.cuda().train()
+        self.models.train()
         train_loss, total_correct = 0, 0
 
         train_loader = self.get_train_dataloader()
