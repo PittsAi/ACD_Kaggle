@@ -13,7 +13,7 @@ from utils.plot_utils import use_svg_display,set_axes,set_figsize,plot
 
 from ACD.trainer.train_base import TrainerBase
 from ACD.models.ACD_model_with_prompt import ACDModelWithPrompt
-from ACD.models.ACD_model_with_combined_prompt import ACDModelWithCombinedPrompt
+#from ACD.models.ACD_model_with_combined_prompt import ACDModelWithCombinedPrompt
 from ACD.dataset.ACD_data_module import ACDDataModule
 
 
