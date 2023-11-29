@@ -80,7 +80,7 @@ class ACDPromptTrainer(TrainerBase):
             if step % self.args.training.optim.gradient_accumulation_steps > 1:
                 loss = loss / self.args.training.optim.gradient_accumulation_steps
             train_loss += loss.mean().item()
-            loss.backward()
+            loss.mean().backward()
             nn.utils.clip_grad_norm_(self.models.parameters(), max_norm=self.args.training.optim.max_grad_norm)
             # print('running')
             if step % self.args.training.optim.gradient_accumulation_steps == 0:
