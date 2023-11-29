@@ -68,7 +68,6 @@ class ACDModelWithPrompt(nn.Module):
                 output_attentions=output_attentions,
                 output_hidden_states=output_hidden_states,           
             )    
-        print("output_size", outputs.size())
 
         sequence_output = outputs[0]
         sequence_output = sequence_output[:, self.pre_seq_len:, :].contiguous()
