@@ -79,7 +79,7 @@ class ACDPromptTrainer(TrainerBase):
             total_correct += torch.sum(pred == batch_label_ids).item()
             if step % self.args.training.optim.gradient_accumulation_steps > 1:
                 loss = loss / self.args.training.optim.gradient_accumulation_steps
-            train_loss += loss.item()
+            train_loss += loss.mean().item()
             loss.backward()
             nn.utils.clip_grad_norm_(self.models.parameters(), max_norm=self.args.training.optim.max_grad_norm)
             # print('running')
@@ -114,7 +114,7 @@ class ACDPromptTrainer(TrainerBase):
                                            input_mask=batch_input_mask,
                                            segment_ids=batch_segment_ids,
                                            label=batch_label_ids)
-                eval_loss += loss.item()
+                eval_loss += loss.mean().item()
                 _, pred = torch.max(output, dim=-1)
                 eval_correct += torch.sum(pred == batch_label_ids).item()
 
