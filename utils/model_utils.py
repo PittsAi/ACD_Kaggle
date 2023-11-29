@@ -5,7 +5,10 @@ def save_model(model, model_save_path, model_name='model'):
     if not os.path.exists(model_save_path):
         os.makedirs(model_save_path)
 
-    torch.save(model, os.path.join(model_save_path, 'model.pt'))
+    if isinstance(model, torch.nn.DataParallel):
+        torch.save(model.module.state_dict(), os.path.join(model_save_path, 'model.pt'))  # save model.module.state_dict()
+
+    # torch.save(model.module.state_dict(), os.path.join(model_save_path, 'model.pt'))
 
 
 def load_model(args):
@@ -13,7 +16,7 @@ def load_model(args):
 
     model = torch.load(model_path, map_location='cpu')
     if args.args.is_cuda:
-        model = model.cuda()
+        model = model.module.cuda()
     return model
 
 
