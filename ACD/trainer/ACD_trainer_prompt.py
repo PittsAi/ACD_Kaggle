@@ -197,7 +197,7 @@ class ACDPromptTrainer(TrainerBase):
             ylabel='Score',\
             legend=[ 'train_acc',  'eval_acc'],\
             figsize=(5.5, 4),\
-            svg_save_path = '/root/02-ACD-Prompt_v1.0/plot-acc.png')
+            svg_save_path = './plot-acc.png')
         
         plot(np.arange(0, epoch + 1, 1), \
             [train_losses,  eval_losses], \
@@ -205,4 +205,4 @@ class ACDPromptTrainer(TrainerBase):
             ylabel='Score',\
             legend=['train_loss', 'eval_loss'],\
             figsize=(5.5, 4),\
-            svg_save_path = '/root/02-ACD-Prompt_v1.0/plot-loss.png')
+            svg_save_path = './plot-loss.png')
